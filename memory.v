@@ -15,14 +15,14 @@ module mem(read_write, address, writeData, readData);
         $readmemb("memory.txt", memory);
     end
     
-    assign readData = {memory[{address[9:4],2'b00}], memory[{address[9:4],2'b01}], memory[{address[9:4],2'b10}], memory[{address[9:4],2'b11}]};
+    assign readData = {memory[{address[9:4],2'b11}], memory[{address[9:4],2'b10}], memory[{address[9:4],2'b01}], memory[{address[9:4],2'b00}]};
     
     always @ (*) begin
         if (read_write == 1'b1) begin
-            memory[{address[9:4],2'b00}] = writeData[31:0];
-            memory[{address[9:4],2'b01}] = writeData[63:32];
-            memory[{address[9:4],2'b11}] = writeData[95:64];
-            memory[{address[9:4],2'b11}] = writeData[127:96]; 
+            memory[{address[9:4],2'b00}] = writeData[127:96];
+            memory[{address[9:4],2'b01}] = writeData[95:64];
+            memory[{address[9:4],2'b11}] = writeData[63:32];
+            memory[{address[9:4],2'b11}] = writeData[31:0]; 
         end
     end
 endmodule
