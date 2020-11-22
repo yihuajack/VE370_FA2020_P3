@@ -10,18 +10,18 @@ module Cache(read_write, address, writeData, readData, hit);
     output reg hit;
 
     reg latest [1:0];
-	reg [31:0] cache [3:0][3:0];
-	reg	valid [3:0];
-	reg	[4:0] tag [3:0];
-	reg index;
+    reg [31:0] cache [3:0][3:0];
+    reg valid [3:0];
+    reg [4:0] tag [3:0];
+    reg index;
     reg [3:0] dirty;
 
     reg read_write_mem;
     reg [9:0] address_mem;
-	reg	[127:0] write_data_mem;
-	wire [127:0] read_data_mem;
+    reg [127:0] write_data_mem;
+    wire [127:0] read_data_mem;
 
-    integer i,j;
+    integer i, j;
 
     initial begin
         for(i=0; i<4; i=i+1) begin
@@ -111,7 +111,7 @@ module Cache(read_write, address, writeData, readData, hit);
             else begin
                 cache[{index, latest[index]}][address[3:2]] = writeData; 
                 if (valid[{index, latest[index]}] == 1'b1) begin
-                    dirty[index] = 1'b1; 
+			dirty[{index, latest[index]}] = 1'b1; 
                 end
             end        
         end
