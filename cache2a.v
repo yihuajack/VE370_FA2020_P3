@@ -1,3 +1,27 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: Ruge Xu, Yihua Liu, Yiqi Sun
+// 
+// Create Date: 2020/11/21 20:10:23
+// Design Name: 2_a
+// Module Name: cache2a
+// Project Name: 2_a
+// Target Devices: Basys3 xc7a35tcpg236-1
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Revision 0.02 - Memory Module Name Changed
+// Revision 0.03 - Bug Fixed at Line 70 (write_data_mem Issue)
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
 module Cache(read_write, address, writeData, readData, hit); 
 
     input read_write; 
@@ -43,7 +67,7 @@ module Cache(read_write, address, writeData, readData, hit);
         end
     end
 
-    Memory1 mem(.read_write(read_write_mem), .address(address_mem), .writeData(writeData), .readData(read_data_mem)); //to be decided
+    Memory mem(.read_write(read_write_mem), .address(address_mem), .writeData(write_data_mem), .readData(read_data_mem)); //to be decided
 
     always @(read_write or address or writeData) begin
         index = address[5:4]; 

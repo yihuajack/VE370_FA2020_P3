@@ -1,3 +1,29 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: Ruge Xu, Yihua Liu, Yiqi Sun
+// 
+// Create Date: 2020/11/21 20:10:23
+// Design Name: 1_a
+// Module Name: cache1a
+// Project Name: 1_a
+// Target Devices: Basys3 xc7a35tcpg236-1
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Revision 0.02 - Memory Module Name Changed
+// Revision 0.03 - Bug Fixed at Line 72 (write_data_mem Issue)
+// Revision 0.04 - Code Style Standardized at Line 86-87
+// Revision 0.05 - Logic Optimized at Line at Line 76-79
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
 module Cache(read_write, address, writeData, readData, hit); 
 
     //10 bit address: tag*4bit + index*2bit + word*2bit + byte*2bit
@@ -43,13 +69,14 @@ module Cache(read_write, address, writeData, readData, hit);
         end
     end
 
-    Memory1 mem(.read_write(read_write_mem), .address(address), .writeData(writeData), .readData(read_data_mem)); //to be decided
+    Memory mem(.read_write(read_write_mem), .address(address), .writeData(write_data_mem), .readData(read_data_mem)); //to be decided
 
     always @(read_write or address or writeData) begin
         index = address[5:4]; 
-        if ((valid[index] == 1'b1) & (tag[index] == address[9:6])) begin
+        /* if ((valid[index] == 1'b1) & (tag[index] == address[9:6])) begin
             assign hit = 1'b1;
-        end
+        end */
+        assign hit = (valid[index] == 1'b1) && (tag[index] == address[9:6]);
         if (hit == 1'b1) begin //hit
             if (read_write == 1'b0) begin //read from mem
                 assign readData = cache[index][address[3:2]]; 
@@ -57,7 +84,6 @@ module Cache(read_write, address, writeData, readData, hit);
             else begin //write, change the data, write through
                 cache[index][address[3:2]] = writeData; 
                 assign read_write_mem = 1'b1; 
-                
             end
         end
         else begin //miss,read mem first
@@ -88,4 +114,3 @@ module Cache(read_write, address, writeData, readData, hit);
         end
     end
 endmodule
-

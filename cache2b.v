@@ -1,4 +1,25 @@
 `timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: Ruge Xu, Yihua Liu, Yiqi Sun
+// 
+// Create Date: 2020/11/21 20:10:23
+// Design Name: 2_b
+// Module Name: cache2b
+// Project Name: 2_b
+// Target Devices: Basys3 xc7a35tcpg236-1
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Revision 0.02 - Memory Module Name Changed
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
 
 // 2-way associative write back cache
 module Cache(read_write, address, writeData, readData, hit);
@@ -43,7 +64,7 @@ module Cache(read_write, address, writeData, readData, hit);
         end
     end
 
-    Memory1 mem(.read_write(read_write_mem), .address(address_mem), .writeData(write_data_mem), .readData(read_data_mem));
+    Memory mem(.read_write(read_write_mem), .address(address_mem), .writeData(write_data_mem), .readData(read_data_mem));
 
     always @(read_write or address or writeData) begin
         index = address[4]; 

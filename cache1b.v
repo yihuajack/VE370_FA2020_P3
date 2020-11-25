@@ -1,3 +1,27 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: Ruge Xu, Yihua Liu, Yiqi Sun
+// 
+// Create Date: 2020/11/21 20:10:23
+// Design Name: 1_b
+// Module Name: cache1b
+// Project Name: 1_b
+// Target Devices: Basys3 xc7a35tcpg236-1
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Revision 0.02 - Memory Module Name Changed
+// Revision 0.03 - Error Fixed at Line 67 (Parameters Order Issue)
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
 module Cache(read_write, address, writeData, readData,hit); 
 //2-way associative tag*5bits+index*1bit+word*2bits+byte*2bits
 
@@ -40,7 +64,7 @@ module Cache(read_write, address, writeData, readData,hit);
 		end
 	end
 
-	Memory1 mem(.read_write(read_write_mem),.address(address),.readData(read_data_mem),.writeData(write_data_mem));
+	Memory mem(.read_write(read_write_mem),.address(address),.writeData(write_data_mem),.readData(read_data_mem));
     
 	always @(read_write or address or writeData) begin
 
