@@ -8,13 +8,16 @@
 		Project 3
 	</h3>
 </center>
+
 ### Teamwork Distribution
 
 | Name      | Work                                                         |
 | --------- | ------------------------------------------------------------ |
 | Yihua Liu | Debug<br />sim1a.v, sim1b.v, sim2a.v, sim2b.v<br />Simulation results<br />memory.mem, random.cpp |
 | Yiqi Sun  | cache1a.v<br />cache1b.v<br />cache2a.v                      |
-| Ruge Xu   | cache2b.v<br />memory.v                                      |
+| Ruge Xu   | cache2b.v<br />memory.v<br />Debug cache1b.v*                |
+
+\* The change log of cache1b.v is not complete.
 
 *****
 

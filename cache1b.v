@@ -16,16 +16,7 @@
 // Revision:
 // Revision 0.01 - File Created
 // Revision 0.02 - Memory Module Name Changed
-// Revision 0.03 - Error Fixed at Line 75 (Parameters Order Issue)
-// Revision 0.04 - Error Fixed at Line 137 and 141 (read_write_mem Issue)
-// Revision 0.05 - Module Name Changed
-// Revision 0.06 - Logic Optimized (index)
-// Revision 0.07 - Indent Reformatted
-// Revision 0.08 - Bug Fixed (hit Issue)
-// Revision 0.09 - Code Style Standardized
-// Revision 0.10 - More Detailed Comments Added
-// Revision 0.11 - Error Fixed at Line 106, 110, and 146 (Cache Read from writeData Issue)
-// Revision 0.12 - Bug Fixed (hit Issue)
+// Revision 0.03 - Error Fixed at Line 67 (Parameters Order Issue)
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
@@ -80,16 +71,18 @@ module Cache1b(read_write, address, writeData, readData, hit);  // 2-way associa
         // hit = (valid[{index, 1'b0}] == 1'b1 && tag[{index, 1'b0}] == address[9:5]) || (valid[{index, 1'b1}] == 1'b1 && tag[{index, 1'b1}] == address[9:5]);  // determine whether there is a hit or a miss
 		// hit = valid[{index, 1'b0}] == 1'b1 & tag[{index, 1'b0}] == address[9:5];  //the first block
 		// hit = valid[{index, 1'b1}] == 1'b1 & tag[{index, 1'b1}] == address[9:5];  //the second block
-        if (valid[{index, 1'b0}] == 1'b1 & tag[{index,1'b0}] == address[9:5]) begin //the first block
+		
+        if (valid[{index, 1'b0}] == 1'b1 && tag[{index,1'b0}] == address[9:5]) begin //the first block
             hit = 1'b1; 
         end
-        else if (valid[{index,1'b1}] == 1'b1 & tag[{index,1'b1}] == address[9:5]) begin //the second block
+        else if (valid[{index,1'b1}] == 1'b1 && tag[{index,1'b1}] == address[9:5]) begin //the second block
             hit = 1'b1; 
         end  // (Accepted) Initially hit = X, these if conditions can only let hit = 1 but not 0, at very first hit will be X when it should be 0,
 		// so it will miss hit == 0 conditions, which will cause memory[1], [2], and [3] to be 0
-		else
+		else begin
 			hit = 1'b0;  // (Alternative, works fine step by step but fail by simulation, may related to timing issue) Complete logic
-
+        end
+                 
         //renew the cache when hit and latest
 		if(hit == 1'b1) begin //hit
 			if(read_write == 1'b0) begin //read
@@ -111,44 +104,36 @@ module Cache1b(read_write, address, writeData, readData, hit);  // 2-way associa
 					latest[index]=1'b1;
 					cache[{index,1'b1}][address[3:2]][7:0]=writeData[7:0];
 				end
+				read_write_mem = 1'b1;
+                write_data_mem={cache[{index,latest[index]}][0],cache[{index,latest[index]}][1],cache[{index,latest[index]}][2],cache[{index,latest[index]}][3]};
 			end
 		end
 		else begin //miss
             if(valid[{index,1'b0}]==1'b0) begin //the first in block not valid
-                latest[index] = 1'b0; 
+                latest[index] = 1'b1; 
             end
-            else begin
-                if(valid[{index,1'b1}]==1'b0) begin //the second in block not valid
-                    latest[index]=1'b1;
-			    end
+            else if(valid[{index,1'b1}]==1'b0) begin //the second in block not valid
+                latest[index]=1'b0;
             end
+            latest[index] = !latest[index];
 			valid[{index,latest[index]}]=1'b1;
 			tag[{index,latest[index]}]=address[9:5];
-		end
-
-		#1;
-        if(hit == 1'b0) begin //miss, read in the memory first
+			#1
 			read_write_mem=1'b0;
-			cache[{index,latest[index]}][3]=read_data_mem[127:96];
-			cache[{index,latest[index]}][2]=read_data_mem[95:64];
-			cache[{index,latest[index]}][1]=read_data_mem[63:32];
-			cache[{index,latest[index]}][0]=read_data_mem[31:0];
+            cache[{index,latest[index]}][3]=read_data_mem[127:96];
+            cache[{index,latest[index]}][2]=read_data_mem[95:64];
+            cache[{index,latest[index]}][1]=read_data_mem[63:32];
+            cache[{index,latest[index]}][0]=read_data_mem[31:0];
+            #1
+            if (read_write == 1'b0) begin //read
+                read_write_mem = 1'b0;
+                readData = cache[{index,latest[index]}][address[3:2]]; 
+            end
+            else begin
+                read_write_mem = 1'b1;
+                cache[{index,latest[index]}][address[3:2]][7:0]=writeData[7:0];
+                write_data_mem={cache[{index,latest[index]}][0],cache[{index,latest[index]}][1],cache[{index,latest[index]}][2],cache[{index,latest[index]}][3]};
+            end
 		end
-		#1; 
-        if (read_write == 1'b0) begin //read
-            read_write_mem = 1'b0; 
-            readData = cache[{index,latest[index]}][address[3:2]]; 
-        end
-        else begin //write
-        	read_write_mem = 1'b1;
-			if(hit == 1'b1) begin //hit
-				write_data_mem={cache[{index,latest[index]}][0],cache[{index,latest[index]}][1],cache[{index,latest[index]}][2],cache[{index,latest[index]}][3]};
-			end
-			else begin //no hit, write through
-				cache[{index,latest[index]}][address[3:2]][7:0]=writeData[7:0];
-				write_data_mem={cache[{index,latest[index]}][0],cache[{index,latest[index]}][1],cache[{index,latest[index]}][2],cache[{index,latest[index]}][3]};
-			end
-		end
-
 	end
 endmodule
