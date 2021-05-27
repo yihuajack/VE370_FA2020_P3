@@ -8,14 +8,21 @@
 		Project 3
 	</h3>
 </center>
+### Honor Code Disclaimer
+
+If there is same questions or labs in the future, it is the responsibility of JI students not to copy or modify these codes, or TeX files because it is against the Honor Code. The owner of this repository doesn't take any commitment for other's faults.
+
+According to the student handbook (2020 version),
+
+> It is a violation of the Honor Code for students to submit, as their own, work that is not the result of their own labor and thoughts. This applies, in particular, to ideas, expressions or work obtained from other students as well as from books, the internet, and other sources. The failure to properly credit ideas, expressions or work from others is considered plagiarism.
 
 ### Teamwork Distribution
 
-| Name      | Work                                                         |
-| --------- | ------------------------------------------------------------ |
-| Yihua Liu | Debug<br />sim1a.v, sim1b.v, sim2a.v, sim2b.v<br />Simulation results<br />memory.mem, random.cpp |
-| Yiqi Sun  | cache1a.v<br />cache1b.v<br />cache2a.v                      |
-| Ruge Xu   | cache2b.v<br />memory.v<br />Debug cache1b.v*                |
+| Name                                            | Work                                                         |
+| ----------------------------------------------- | ------------------------------------------------------------ |
+| [Yihua Liu](https://github.com/yihuajack)       | Debug<br />sim1a.v, sim1b.v, sim2a.v, sim2b.v<br />Simulation results<br />memory.mem, random.cpp |
+| [Yiqi Sun](https://github.com/TogetherWithYiQi) | cache1a.v<br />cache1b.v<br />cache2a.v                      |
+| [Ruge Xu](https://github.com/schrodinger95)     | cache2b.v<br />memory.v<br />Debug cache1b.v*                |
 
 \* The change log of cache1b.v is not complete.
 
